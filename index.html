@@ -14,13 +14,22 @@
 
         <script>
          async function fetchSPARQLData() {
-             const endpointUrl = 'https://spang.dbcls.jp/sparql';
+             const endpointUrl = 'https://orth.dbcls.jp/sparql-orth4';
              const sparqlQuery = `
-SELECT ?s ?p ?o
+PREFIX hgnc: <http://identifiers.org/hgnc/>
+PREFIX biolink: <https://w3id.org/biolink/vocab/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?hgnc ?gene ?label ?symbol ?phenotype ?phenotype_label
 WHERE {
-    ?s ?p ?o
+  VALUES ?hgnc { hgnc:16435 }
+  ?hgnc biolink:orthologous_to ?gene .
+  ?gene rdfs:label ?label ;
+        biolink:symbol ?symbol ;
+        biolink:has_phenotype ?phenotype .
+  ?phenotype rdfs:label ?phenotype_label .
+  FILTER(CONTAINS(?label, ' '))
 }
-LIMIT 10
              `;
 
              const response = await fetch(endpointUrl, {
