@@ -13,7 +13,7 @@
         </table>
 
         <script>
-         async function fetchSPARQLData() {
+         async function fetchDatabySPARQL() {
              const endpointUrl = 'https://orth.dbcls.jp/sparql-orth4';
              const sparqlQuery = `
 PREFIX hgnc: <http://identifiers.org/hgnc/>
@@ -73,7 +73,7 @@ WHERE {
          }
 
          async function init() {
-             const data = await fetchSPARQLData();
+             const data = await fetchDatabySPARQL();
              renderTable(data);
          }
 
