@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SPARQL JSON to HTML Table</title>
+    </head>
+    <body>
+
+        <h1>SPARQL結果</h1>
+        <table border="1" id="resultsTable">
+            <!-- ヘッダとボディはJavaScriptで動的に生成されます -->
+        </table>
+
+        <script>
+         async function fetchSPARQLData() {
+             const endpointUrl = 'https://spang.dbcls.jp/sparql';
+             const sparqlQuery = `
+SELECT ?s ?p ?o
+WHERE {
+    ?s ?p ?o
+}
+LIMIT 10
+             `;
+
+             const response = await fetch(endpointUrl, {
+                 method: 'POST',
+                 headers: {
+                     'Accept': 'application/sparql-results+json',
+                     'Content-Type': 'application/x-www-form-urlencoded'
+                 },
+                 body: `query=${encodeURIComponent(sparqlQuery)}`
+             });
+
+             return await response.json();
+         }
+
+         function renderTable(data) {
+             const table = document.getElementById('resultsTable');
+             
+             // ヘッダの作成
+             const thead = document.createElement('thead');
+             const headerRow = document.createElement('tr');
+             data.head.vars.forEach(variable => {
+                 const th = document.createElement('th');
+                 th.textContent = variable;
+                 headerRow.appendChild(th);
+             });
+             thead.appendChild(headerRow);
+             table.appendChild(thead);
+
+             // ボディの作成
+             const tbody = document.createElement('tbody');
+             data.results.bindings.forEach(binding => {
+                 const tr = document.createElement('tr');
+                 data.head.vars.forEach(variable => {
+                     const td = document.createElement('td');
+                     td.textContent = binding[variable].value;
+                     tr.appendChild(td);
+                 });
+                 tbody.appendChild(tr);
+             });
+             table.appendChild(tbody);
+         }
+
+         async function init() {
+             const data = await fetchSPARQLData();
+             renderTable(data);
+         }
+
+         // 初期化関数の実行
+         init();
+        </script>
+
+    </body>
+</html>
