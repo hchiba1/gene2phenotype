@@ -7,7 +7,7 @@
     </head>
     <body>
 
-        <h1>SPARQL結果</h1>
+        <h1>Results</h1>
         <table border="1" id="resultsTable">
             <!-- ヘッダとボディはJavaScriptで動的に生成されます -->
         </table>
@@ -20,7 +20,7 @@ PREFIX hgnc: <http://identifiers.org/hgnc/>
 PREFIX biolink: <https://w3id.org/biolink/vocab/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?hgnc ?gene ?label ?symbol ?phenotype ?phenotype_label
+SELECT ?gene ?label ?symbol ?phenotype ?phenotype_label
 WHERE {
   VALUES ?hgnc { hgnc:16435 }
   ?hgnc biolink:orthologous_to ?gene .
