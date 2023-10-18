@@ -13,7 +13,7 @@
         </table>
 
         <script>
-         async function fetchDatabySPARQL() {
+         async function fetchDatabySPARQL(hgnc) {
              const endpointUrl = 'https://orth.dbcls.jp/sparql-orth4';
              const sparqlQuery = `
 PREFIX hgnc: <http://identifiers.org/hgnc/>
@@ -22,7 +22,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?gene ?label ?symbol ?phenotype ?phenotype_label
 WHERE {
-  VALUES ?hgnc { hgnc:16435 }
+  VALUES ?hgnc { hgnc:${hgnc} }
   ?hgnc biolink:orthologous_to ?gene .
   ?gene rdfs:label ?label ;
         biolink:symbol ?symbol ;
@@ -73,7 +73,10 @@ WHERE {
          }
 
          async function init() {
-             const data = await fetchDatabySPARQL();
+             const params = new URLSearchParams(window.location.search);
+             const hgnc = params.get('hgnc') || '16435';
+             console.log(`Param: ${hgnc}`);
+             const data = await fetchDatabySPARQL(hgnc);
              renderTable(data);
          }
 
