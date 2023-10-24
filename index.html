@@ -15,13 +15,11 @@
         <script src="js/sparql.js"></script>
         <script src="js/render-table.js"></script>
         <script>
-         init();
-         async function init() {
-             const params = new URLSearchParams(window.location.search);
-             const hgnc = params.get('hgnc') || '16435';
-             const data = await fetchDatabySPARQL(hgnc);
+         const params = new URLSearchParams(window.location.search);
+         const hgnc = params.get('hgnc') || '16435';
+         fetchDatabySPARQL(hgnc).then(data => {
              renderTable(data);
-         }
+         });
         </script>
     </body>
 </html>
