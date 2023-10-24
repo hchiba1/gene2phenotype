@@ -12,9 +12,16 @@
         <table border="1" id="resultsTable">
         </table>
 
-        <script src="show-table.js"></script>
+        <script src="js/sparql.js"></script>
+        <script src="js/render-table.js"></script>
         <script>
          init();
+         async function init() {
+             const params = new URLSearchParams(window.location.search);
+             const hgnc = params.get('hgnc') || '16435';
+             const data = await fetchDatabySPARQL(hgnc);
+             renderTable(data);
+         }
         </script>
     </body>
 </html>
