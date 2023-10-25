@@ -9,6 +9,7 @@
     <body>
 
         <h1>Results</h1>
+        <h2>Phenotypes of orthologs</h2>
         <table border="1" id="resultsTable">
         </table>
 
@@ -17,6 +18,8 @@
         <script>
          const params = new URLSearchParams(window.location.search);
          const hgnc = params.get('hgnc') || '16435';
+         const h1 = document.querySelector('h1');
+         h1.innerText = `HGNC:${hgnc}`;
          fetchDatabySPARQL(hgnc).then(data => {
              renderTable(data);
          });
