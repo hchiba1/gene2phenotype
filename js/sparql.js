@@ -15,7 +15,7 @@ WHERE {
   ?phenotype rdfs:label ?phenotype_label .
   FILTER(CONTAINS(?label, ' '))
 }
-             `;
+`;
 
   const response = await fetch(endpointUrl, {
     method: 'POST',
